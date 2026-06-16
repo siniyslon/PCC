@@ -7,7 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<button class="settings-btn" onclick="toggleSettings()">⚙️ Настройки</button>
 
+<div id="settings-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleSettings()">&times;</span>
+        <h3>Настройки и Инфо</h3>
+        <div class="modal-section">
+            <h4>Тема оформления</h4>
+            <button id="theme-toggle-btn" onclick="switchTheme()">Переключить на Светлую</button>
+        </div>
+        <div class="modal-section">
+            <h4>Информация о проекте</h4>
+            <p>Просмотров сайта: <strong id="visit-counter">0</strong></p>
+            <p>Наш Telegram-канал: <a href="https://t.me/mock_pc_builder_channel" target="_blank" class="tg-link">@pc_builder_sim</a></p>
+        </div>
+    </div>
+</div>
     <div class="app-container">
         <aside class="sidebar">
             <h2>Комплектующие</h2>
