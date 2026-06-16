@@ -1,105 +1,136 @@
-/* Общие настройки страницы */
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a1a1a; /* Глубокий графитовый фон */
-    color: #ffffff; /* Белый текст */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
 }
 
-/* Сетка: разделение на левую панель и зону сборки */
 .app-container {
     display: grid;
-    grid-template-columns: 350px 1fr; 
+    grid-template-columns: 380px 1fr;
     flex: 1;
-    overflow: hidden; /* Чтобы скроллилась только панель, а не весь сайт */
+    overflow: hidden;
 }
 
-/* Левая панель с прокруткой (overflow-y) */
 .sidebar {
-    background-color: #242424; 
+    background-color: #1a1a1a;
     padding: 20px;
-    border-right: 1px solid #333333;
-    overflow-y: auto; /* Включает скроллбар, если элементов много */
+    border-right: 1px solid #2d2d2d;
+    overflow-y: auto;
 }
 
-/* Заголовки */
-h2, h3 {
+h2, h3, h4 {
     margin-top: 0;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 0.5px;
+    color: #ffffff;
 }
 
-/* Контейнеры выпадающих списков */
 .component-select {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .component-select label {
     display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
+    margin-bottom: 6px;
+    font-size: 13px;
     color: #aaaaaa;
 }
 
-/* Стилизация выпадающих списков (padding для внутренних отступов) */
 .component-select select {
     width: 100%;
-    padding: 10px; 
-    background-color: #333333;
+    padding: 10px;
+    background-color: #262626;
     color: #ffffff;
-    border: 1px solid #444444;
-    border-radius: 4px;
+    border: 1px solid #3d3d3d;
+    border-radius: 6px;
     font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
 }
 
 .component-select select:focus {
-    border-color: #007acc; /* Подсветка при клике */
+    border-color: #007acc;
 }
 
-/* Правая панель визуализации */
 .visualizer {
-    background-color: #1e1e1e;
+    background-color: #141414;
     padding: 20px;
     display: flex;
     flex-direction: column;
 }
 
-/* Пунктирное окно для корпуса, как на рисунке */
 #pc-case {
     flex: 1;
-    border: 2px dashed #444444; 
-    border-radius: 8px;
+    border: 2px dashed #333333;
+    border-radius: 12px;
+    background-color: #0b0b0b;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #161616;
+    padding: 20px;
+}
+
+.case-blueprint {
+    text-align: center;
+    width: 100%;
 }
 
 .placeholder-text {
-    color: #555555;
-    font-weight: bold;
+    color: #444444;
+    font-size: 24px;
+    font-weight: 600;
     letter-spacing: 2px;
+    margin-bottom: 20px;
 }
 
-/* Нижняя панель */
-.info-panel {
-    background-color: #242424;
-    padding: 20px;
-    border-top: 1px solid #333333;
-}
-
-/* Рамка для инструкций внизу */
-#instructions {
-    background-color: #1a1a1a;
-    border: 1px dashed #555555; 
+#assembly-list {
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto;
+    background: #161616;
     padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #222;
+}
+
+#assembly-list p {
+    margin: 8px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 4px;
+}
+
+.info-panel {
+    background-color: #1a1a1a;
+    border-top: 1px solid #2d2d2d;
+    padding: 15px 20px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+    min-height: 120px;
+}
+
+.rating-box {
+    border-right: 1px solid #2d2d2d;
+    padding-right: 20px;
+}
+
+#instructions {
+    background-color: #111111;
+    border: 1px dashed #444444;
+    padding: 12px;
     border-radius: 6px;
-    margin-top: 10px;
-    color: #cccccc;
+    min-height: 60px;
+    font-size: 14px;
+}
+
+.status-ok { color: #4caf50; }
+.status-warn { color: #ff9800; }
+.status-error { color: #f44336; }
 }
