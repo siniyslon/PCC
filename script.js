@@ -1,5 +1,4 @@
-// Полная база данных из таблицы вашего друга (резервный массив для демонстрации)
-const localDB = {
+const db = {
     cpu: [
         { id: 1, name: 'Intel Core i3-12100F', socket: 'LGA1700', class: 'Бюджетный', power: 65 },
         { id: 2, name: 'AMD Ryzen 5 5500', socket: 'AM4', class: 'Бюджетный', power: 65 },
@@ -93,27 +92,7 @@ const localDB = {
     ]
 };
 
-// Переменная для работы с Supabase (если подключена)
-let supabaseClient = null;
-
-// Инициализация подключения (замените URL и KEY на свои из панели Supabase)
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
-
-if (typeof supabase !== 'undefined' && SUPABASE_URL !== "YOUR_SUPABASE_URL") {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-}
-
-// Получение данных (из базы или локально)
-async function getData(table) {
-    if (supabaseClient) {
-        let { data } = await supabaseClient.from(table).select('*');
-        if (data && data.length > 0) return data;
-    }
-    return localDB[table];
-}
-
-async function initConfigurator() {
+function initConfigurator() {
     const selects = {
         cpu: document.getElementById('cpu-select'),
         motherboard: document.getElementById('motherboard-select'),
@@ -123,17 +102,6 @@ async function initConfigurator() {
         cooler: document.getElementById('cooler-select'),
         psu: document.getElementById('psu-select'),
         case: document.getElementById('case-select')
-    };
-
-    const db = {
-        cpu: await getData('cpu'),
-        motherboard: await getData('motherboard'),
-        gpu: await getData('gpu'),
-        ram: await getData('ram'),
-        storage: await getData('storage'),
-        cooler: await getData('cooler'),
-        psu: await getData('psu'),
-        case: await getData('case')
     };
 
     function renderOptions(element, list, placeholder, textFn) {
@@ -152,22 +120,28 @@ async function initConfigurator() {
         const selectedCPU = db.cpu.find(c => c.id == selects.cpu.value);
         const selectedMB = db.motherboard.find(m => m.id == selects.motherboard.value);
 
-        // Фильтр плат по процессору
+        // 1. Фильтр плат по процессору (если он выбран)
         let allowedMB = db.motherboard;
-        if (selectedCPU) allowedMB = db.motherboard.filter(m => m.socket === selectedCPU.socket);
+        if (selectedCPU) {
+            allowedMB = db.motherboard.filter(m => m.socket === selectedCPU.socket);
+        }
         renderOptions(selects.motherboard, allowedMB, "Выберите плату...", m => `${m.name} (${m.socket}/${m.type})`);
 
-        // Фильтр процессоров по плате
+        // 2. Фильтр процессоров по плате (если она выбрана)
         let allowedCPU = db.cpu;
-        if (selectedMB) allowedCPU = db.cpu.filter(c => c.socket === selectedMB.socket);
+        if (selectedMB) {
+            allowedCPU = db.cpu.filter(c => c.socket === selectedMB.socket);
+        }
         renderOptions(selects.cpu, allowedCPU, "Выберите процессор...", c => `${c.name} (${c.socket})`);
 
-        // Фильтр памяти по плате
+        // 3. Фильтр памяти по плате (если она выбрана)
         let allowedRAM = db.ram;
-        if (selectedMB) allowedRAM = db.ram.filter(r => r.name.includes(selectedMB.type));
+        if (selectedMB) {
+            allowedRAM = db.ram.filter(r => r.name.toUpperCase().includes(selectedMB.type.toUpperCase()));
+        }
         renderOptions(selects.ram, allowedRAM, "Выберите память...", r => r.name);
 
-        // Остальные заполняются без жестких фильтров
+        // Остальные списки всегда заполнены
         renderOptions(selects.gpu, db.gpu, "Выберите видеокарту...", g => `${g.name} (${g.power}W)`);
         renderOptions(selects.storage, db.storage, "Выберите накопитель...", s => s.name);
         renderOptions(selects.cooler, db.cooler, "Выберите охлаждение...", c => c.name);
@@ -210,7 +184,7 @@ async function initConfigurator() {
             logs.push(`<span class="status-error">❌ Процессор ${cCPU.socket} не подходит к плате ${cMB.socket}!</span>`);
             error = true;
         }
-        if (cMB && cRAM && !cRAM.name.includes(cMB.type)) {
+        if (cMB && cRAM && !cRAM.name.toUpperCase().includes(cMB.type.toUpperCase())) {
             logs.push(`<span class="status-error">❌ Плата поддерживает ${cMB.type}, а выбрана память другого типа!</span>`);
             error = true;
         }
@@ -232,9 +206,9 @@ async function initConfigurator() {
         }
 
         // Общие расчеты
-        document.getElementById('total-power').textContent = totalPower + 50; // +50Вт на систему
+        document.getElementById('total-power').textContent = totalPower > 0 ? totalPower + 50 : 0; // +50Вт на систему, только если есть компоненты
+        
         if (classes.length > 0) {
-            // Вывод самого частого класса как итогового оценки
             const counts = {}; let maxClass = classes[0]; let maxCount = 1;
             classes.forEach(c => { counts[c] = (counts[c] || 0) + 1; if(counts[c] > maxCount) { maxClass = c; maxCount = counts[c]; } });
             document.getElementById('build-class').textContent = maxClass;
@@ -253,9 +227,9 @@ async function initConfigurator() {
         });
     });
 
+    // Стартовая прорисовка
     updateAllSelects();
     checkLogic();
 }
 
-window.addEventListener('DOMContentLoaded', initConfigurator);
-
+document.addEventListener('DOMContentLoaded', initConfigurator);
