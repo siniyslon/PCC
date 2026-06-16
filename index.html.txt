@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Симулятор сборки ПК</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <h2>Комплектующие</h2>
+            
+            <div class="component-select">
+                <label for="cpu-select">Процессор (CPU):</label>
+                <select id="cpu-select">
+                    <option value="">Выберите процессор...</option>
+                </select>
+            </div>
+
+            <div class="component-select">
+                <label for="motherboard-select">Материнская плата:</label>
+                <select id="motherboard-select">
+                    <option value="">Выберите плату...</option>
+                </select>
+            </div>
+
+            <div class="component-select">
+                <label for="gpu-select">Видеокарта (GPU):</label>
+                <select id="gpu-select">
+                    <option value="">Выберите видеокарту...</option>
+                </select>
+            </div>
+
+            <div class="component-select">
+                <label for="ram-select">Оперативная память (RAM):</label>
+                <select id="ram-select">
+                    <option value="">Выберите память...</option>
+                </select>
+            </div>
+
+            <div class="component-select">
+                <label for="storage-select">Накопитель (SSD):</label>
+                <select id="storage-select">
+                    <option value="">Выберите накопитель...</option>
+                </select>
+            </div>
+
+            <div class="component-select">
+                <label for="psu-select">Блок питания (PSU):</label>
+                <select id="psu-select">
+                    <option value="">Выберите блок питания...</option>
+                </select>
+            </div>
+
+            <div class="component-select">
+                <label for="cooler-select">Охлаждение:</label>
+                <select id="cooler-select">
+                    <option value="">Выберите кулер/СЖО...</option>
+                </select>
+            </div>
+
+            <div class="component-select">
+                <label for="case-select">Корпус:</label>
+                <select id="case-select">
+                    <option value="">Выберите корпус...</option>
+                </select>
+            </div>
+        </aside>
+
+        <main class="visualizer">
+            <h2>Зона сборки (2D/3D)</h2>
+            <div id="pc-case">
+                <p class="placeholder-text">2D/3D VISUALIZATIONS</p>
+            </div>
+        </main>
+
+    </div>
+
+    <footer class="info-panel">
+        <h3>Характеристики и оценка</h3>
+        <p>Средняя оценка ПК: <span id="rating">0</span> баллов</p>
+        <div id="instructions">
+            <p>Тут будут подсказки по совместимости и инструкция по сборке...</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>
