@@ -233,3 +233,43 @@ function initConfigurator() {
 }
 
 document.addEventListener('DOMContentLoaded', initConfigurator);
+document.addEventListener("DOMContentLoaded", () => {
+    let visits = localStorage.getItem("site_visits");
+    if (!visits) {
+        visits = 1;
+    } else {
+        visits = parseInt(visits) + 1;
+    }
+    localStorage.setItem("site_visits", visits);
+    
+    const counterEl = document.getElementById("visit-counter");
+    if (counterEl) counterEl.innerText = visits;
+
+    // Установка начального класса темы, если его нет
+    if (!document.body.classList.contains("dark-theme") && !document.body.classList.contains("light-theme")) {
+        document.body.classList.add("dark-theme");
+    }
+});
+
+// Открытие / Закрытие настроек
+function toggleSettings() {
+    const modal = document.getElementById("settings-modal");
+    modal.style.display = (modal.style.display === "block") ? "none" : "block";
+}
+
+// Переключение темной/светлой темы
+function switchTheme() {
+    const body = document.body;
+    const btn = document.getElementById("theme-toggle-btn");
+    
+    if (body.classList.contains("dark-theme")) {
+        body.classList.remove("dark-theme");
+        body.classList.add("light-theme");
+        btn.innerText = "Переключить на Тёмную";
+    } else {
+        body.classList.remove("light-theme");
+        body.classList.add("dark-theme");
+        btn.innerText = "Переключить на Светлую";
+    }
+}
+
