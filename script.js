@@ -10,13 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const counterEl = document.getElementById("visit-counter");
     if (counterEl) counterEl.innerText = visits;
 
+    // При загрузке проверяем сохраненную тему и применяем её
     const savedTheme = localStorage.getItem("theme") || "dark";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-    
-    const btn = document.getElementById("theme-toggle-btn");
-    if (btn) {
-        btn.innerText = savedTheme === "dark" ? "Переключить на Светлую" : "Переключить на Тёмную";
-    }
+    applyTheme(savedTheme);
 });
 
 function toggleSettings() {
@@ -24,17 +20,75 @@ function toggleSettings() {
     modal.style.display = (modal.style.display === "block") ? "none" : "block";
 }
 
+// Новая функция, которая жестко перекрашивает ВСЕ элементы на сайте
+function applyTheme(theme) {
+    const btn = document.getElementById("theme-toggle-btn");
+    const modalContent = document.querySelector(".modal-content");
+    const body = document.body;
+    
+    // Находим вообще все панели, карточки, выпадающие списки и текстовые блоки на твоем сайте
+    const allPanels = document.querySelectorAll('.builder-panel, .summary-panel, [class*="panel"], [class*="card"], [class*="zone"], .modal-content');
+    const allSelects = document.querySelectorAll('select, input');
+    const allHeaders = document.querySelectorAll('h1, h2, h3, h4, label');
+
+    if (theme === "light") {
+        // Силовая вставка светлых стилей
+        body.style.backgroundColor = "#f6f8fa";
+        body.style.color = "#24292f";
+        
+        if (modalContent) modalContent.style.backgroundColor = "#ffffff";
+
+        allPanels.forEach(panel => {
+            panel.style.backgroundColor = "#ffffff";
+            panel.style.borderColor = "#d0d7de";
+            panel.style.color = "#24292f";
+        });
+
+        allSelects.forEach(select => {
+            select.style.backgroundColor = "#f6f8fa";
+            select.style.color = "#24292f";
+            select.style.borderColor = "#d0d7de";
+        });
+
+        allHeaders.forEach(header => {
+            header.style.color = "#000000";
+        });
+
+        if (btn) btn.innerText = "Переключить на Тёмную";
+    } else {
+        // Силовая вставка тёмных стилей обратно
+        body.style.backgroundColor = "#0d1117";
+        body.style.color = "#c9d1d9";
+        
+        if (modalContent) modalContent.style.backgroundColor = "#161b22";
+
+        allPanels.forEach(panel => {
+            panel.style.backgroundColor = "#161b22";
+            panel.style.borderColor = "#30363d";
+            panel.style.color = "#c9d1d9";
+        });
+
+        allSelects.forEach(select => {
+            select.style.backgroundColor = "#0d1117";
+            select.style.color = "#c9d1d9";
+            select.style.borderColor = "#30363d";
+        });
+
+        allHeaders.forEach(header => {
+            header.style.color = "#ffffff";
+        });
+
+        if (btn) btn.innerText = "Переключить на Светлую";
+    }
+}
+
+// Функция для кнопки
 function switchTheme() {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const currentTheme = localStorage.getItem("theme") || "dark";
     const newTheme = currentTheme === "dark" ? "light" : "dark";
     
-    document.documentElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
-    
-    const btn = document.getElementById("theme-toggle-btn");
-    if (btn) {
-        btn.innerText = newTheme === "dark" ? "Переключить на Светлую" : "Переключить на Тёмную";
-    }
+    applyTheme(newTheme);
 }
 
 function updateBuild() {
