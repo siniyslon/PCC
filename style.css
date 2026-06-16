@@ -270,5 +270,36 @@ select:focus {
         text-align: center;
     }
 }
+body[data-theme="light"] {
+    background-color: #f0f2f5 !important;
+    color: #1a1a1a !important;
+}
+
+body[data-theme="light"] .modal-content {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+body[data-theme="light"] .builder-panel,
+body[data-theme="light"] .summary-panel,
+body[data-theme="light"] .Characteristics,
+body[data-theme="light"] [class*="оценка"] {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    border-color: #dcdfe6 !important;
+}
+
+body[data-theme="light"] select {
+    background-color: #f5f7fa !important;
+    color: #1a1a1a !important;
+    border-color: #dcdfe6 !important;
+}
+
+body[data-theme="light"] label,
+body[data-theme="light"] h1,
+body[data-theme="light"] h2,
+body[data-theme="light"] h3 {
+    color: #1a1a1a !important;
+}
 
 
